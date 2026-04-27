@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday ✦</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --pink:    #f4a7b4;
+      --peach:   #f7c9a0;
+      --mint:    #a8d8bf;
+      --lavender:#c5aee8;
+      --cream:   #fdf8f2;
+      --deep:    #3d2c2c;
+      --mid:     #7a5c5c;
+      --soft:    #c9a6a6;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      overflow: hidden;
+    }
+
+    /* ── Animated blob background ── */
+    .bg-blobs {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; overflow: hidden;
+    }
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.45;
+      animation: blobDrift 14s ease-in-out infinite alternate;
+    }
+    .blob1 { width:500px;height:500px;background:var(--pink);   top:-100px;left:-120px;animation-duration:16s; }
+    .blob2 { width:400px;height:400px;background:var(--peach);  bottom:-80px;right:-100px;animation-duration:12s;animation-delay:-4s; }
+    .blob3 { width:320px;height:320px;background:var(--lavender);top:40%;left:55%;animation-duration:18s;animation-delay:-8s; }
+    .blob4 { width:260px;height:260px;background:var(--mint);   top:20%;left:25%;animation-duration:20s;animation-delay:-2s; }
+
+    @keyframes blobDrift {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(40px,30px) scale(1.08); }
+    }
+
+    /* ── Floating confetti ── */
+    .confetti-layer { position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden; }
+    .conf {
+      position:absolute; top:-30px;
+      animation: confFall linear infinite; opacity:0;
+    }
+    @keyframes confFall {
+      0%   { transform:translateY(0) rotate(0deg);   opacity:0; }
+      10%  { opacity:0.7; }
+      90%  { opacity:0.5; }
+      100% { transform:translateY(110vh) rotate(720deg); opacity:0; }
+    }
+
+    /* ── Stage ── */
+    .stage {
+      position:relative;z-index:2;
+      width:100%;height:100vh;
+      display:flex;align-items:center;justify-content:center;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: rgba(255,255,255,0.62);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1.5px solid rgba(255,255,255,0.8);
+      border-radius: 36px;
+      padding: 56px 60px 52px;
+      max-width: 620px;
+      width: 92%;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(180,120,120,0.16), 0 2px 6px rgba(180,120,120,0.08);
+      animation: riseIn 1s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes riseIn {
+      from { opacity:0;transform:translateY(40px) scale(.97); }
+      to   { opacity:1;transform:translateY(0) scale(1); }
+    }
+
+    .section { display:none; }
+    .section.active {
+      display:block;
+      animation: sectionIn .55s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes sectionIn {
+      from { opacity:0;transform:translateY(18px); }
+      to   { opacity:1;transform:translateY(0); }
+    }
+
+    /* ── Illustration ── */
+    .illo { margin:0 auto 22px;display:block; }
+
+    /* ── Typography ── */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem; font-weight:700;
+      color: var(--deep); line-height:1.15; margin-bottom:14px;
+    }
+    h1 em { font-style:italic; color:var(--soft); }
+
+    .tag {
+      display:inline-block; font-size:.72rem;
+      letter-spacing:.22em; text-transform:uppercase;
+      color:var(--soft); border:1px solid rgba(196,166,166,.4);
+      border-radius:999px; padding:5px 18px; margin-bottom:20px;
+    }
+
+    p {
+      color:var(--mid); font-size:1.05rem;
+      line-height:1.9; font-weight:300; margin-bottom:6px;
+    }
+
+    .memory-note {
+      background:rgba(248,240,240,.7);
+      border-radius:16px; padding:12px 18px;
+      font-size:.88rem; color:var(--soft);
+      margin-bottom:18px; letter-spacing:.03em;
+    }
+
+    /* ── Photo booth ── */
+    .photo-booth {
+      display:flex;gap:14px;justify-content:center;
+      margin:18px 0;flex-wrap:wrap;
+    }
+    .photo-booth img {
+      width:138px;height:170px;object-fit:cover;
+      border-radius:22px;
+      box-shadow:0 12px 30px rgba(0,0,0,.13);
+      transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s;
+      cursor:pointer;border:3px solid rgba(255,255,255,.8);
+    }
+    .photo-booth img:hover,
+    .photo-booth img.popped {
+      transform:rotate(5deg) scale(1.08) translateY(-6px);
+      box-shadow:0 22px 44px rgba(0,0,0,.18);
+    }
+
+    /* ── Audio ── */
+    audio {
+      width:100%; margin:16px 0 4px;
+      border-radius:999px; accent-color:var(--pink);
+    }
+
+    /* ── Divider ── */
+    .divider { display:flex;align-items:center;gap:12px;margin:20px auto; }
+    .divider span { flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(196,166,166,.5),transparent); }
+
+    /* ── Button ── */
+    .btn {
+      display:inline-block; margin-top:26px;
+      padding:14px 36px; border:none; border-radius:999px;
+      background:linear-gradient(135deg,var(--pink),var(--peach));
+      color:white; font-family:'DM Sans',sans-serif;
+      font-size:.95rem; font-weight:400; letter-spacing:.06em;
+      cursor:pointer; box-shadow:0 8px 24px rgba(244,167,180,.45);
+      transition:transform .25s,box-shadow .25s; position:relative; overflow:hidden;
+    }
+    .btn:hover { transform:translateY(-3px) scale(1.03);box-shadow:0 14px 36px rgba(244,167,180,.5); }
+    .btn:active { transform:scale(.97); }
+
+    /* ── Final message ── */
+    .final-msg {
+      font-family:'Playfair Display',serif; font-style:italic;
+      font-size:1.15rem; color:var(--deep); line-height:1.85; margin-top:10px;
+    }
+
+    /* ── Sway ── */
+    @keyframes sway {
+      0%,100% { transform:rotate(-4deg); }
+      50%      { transform:rotate(4deg); }
+    }
+
+    @media (max-width:480px) {
+      .card { padding:40px 28px 36px; }
+      h1 { font-size:2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-blobs">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+  <div class="blob blob4"></div>
+</div>
+
+<div class="confetti-layer" id="confetti"></div>
+
+<div class="stage">
+  <div class="card">
+
+    <!-- SECTION 1 — Cover -->
+    <div class="section active" id="section1">
+      <svg class="illo" width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="55" cy="90" rx="40" ry="9" fill="#f7c9a0" opacity=".4"/>
+        <rect x="18" y="58" width="74" height="30" rx="10" fill="#fce4ec"/>
+        <rect x="18" y="46" width="74" height="16" rx="8" fill="#f9b8cb"/>
+        <path d="M18 54 Q30 60 42 52 Q54 46 66 54 Q78 60 92 52" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="30" y="62" width="6" height="2.5" rx="1.2" fill="#a8d8bf" transform="rotate(-20 30 62)"/>
+        <rect x="52" y="67" width="6" height="2.5" rx="1.2" fill="#c5aee8" transform="rotate(15 52 67)"/>
+        <rect x="72" y="62" width="6" height="2.5" rx="1.2" fill="#f4a7b4" transform="rotate(-10 72 62)"/>
+        <rect x="40" y="74" width="6" height="2.5" rx="1.2" fill="#f7c9a0" transform="rotate(25 40 74)"/>
+        <rect x="63" y="77" width="6" height="2.5" rx="1.2" fill="#a8d8bf" transform="rotate(-15 63 77)"/>
+        <rect x="34" y="34" width="7" height="14" rx="3.5" fill="#c5aee8"/>
+        <rect x="51.5" y="30" width="7" height="18" rx="3.5" fill="#f4a7b4"/>
+        <rect x="69" y="34" width="7" height="14" rx="3.5" fill="#a8d8bf"/>
+        <ellipse cx="37.5" cy="31" rx="3.5" ry="5" fill="#f7c9a0" opacity=".9"/>
+        <ellipse cx="37.5" cy="32" rx="2" ry="3" fill="#fff" opacity=".6"/>
+        <ellipse cx="55" cy="26" rx="3.5" ry="5" fill="#f7c9a0" opacity=".9"/>
+        <ellipse cx="55" cy="27" rx="2" ry="3" fill="#fff" opacity=".6"/>
+        <ellipse cx="72.5" cy="31" rx="3.5" ry="5" fill="#f7c9a0" opacity=".9"/>
+        <ellipse cx="72.5" cy="32" rx="2" ry="3" fill="#fff" opacity=".6"/>
+      </svg>
+      <div class="tag">✦ a birthday sneham ✦</div>
+      <h1>Happy<br/><em>Birthday pathooi</em></h1>
+      <p>from my heart,<br/>made just for you.</p>
+      <button class="btn" onclick="goTo(2)">Open Your Letter →</button>
+    </div>
+
+    <!-- SECTION 2 — Letter -->
+    <div class="section" id="section2">
+      <svg class="illo" width="110" height="90" viewBox="0 0 110 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="18" width="94" height="62" rx="10" fill="#fce4ec"/>
+        <path d="M8 28 L55 54 L102 28" stroke="#f4a7b4" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <line x1="8" y1="80" x2="35" y2="56" stroke="#f4a7b4" stroke-width="2" stroke-linecap="round"/>
+        <line x1="102" y1="80" x2="75" y2="56" stroke="#f4a7b4" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="55" cy="18" r="10" fill="#f4a7b4"/>
+        <path d="M55 12 L57 16 L62 16 L58 19 L60 24 L55 21 L50 24 L52 19 L48 16 L53 16 Z" fill="white" opacity=".85"/>
+      </svg>
+      <div class="tag">✦ dear you ✦</div>
+      <h1>Nte <em>Letter</em></h1>
+      <p>happy birthday beevyee...koreee paryan nd but motham idheel kolloola,ijj nte lifel vanneyn shesham life koree maari,inte swabhavam vallarneyl ijj 
+        oru main reason ahnn,and you make me a good boy,nechoo so happy ijj nte lifel ndayyel and happyyyyy last year of teenage.</p>
+      <div class="divider"><span></span><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 14 C4 10 1 8 1 5.5 A3.5 3.5 0 0 1 8 4.2 A3.5 3.5 0 0 1 15 5.5 C15 8 12 10 8 14Z" fill="#f4a7b4"/></svg><span></span></div>
+      <button class="btn" onclick="goTo(3)">See Memories →</button>
+    </div>
+
+    <!-- SECTION 3 — Photo Booth -->
+    <div class="section" id="section3">
+      <svg class="illo" width="100" height="80" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="14" width="52" height="62" rx="6" fill="#c5aee8" transform="rotate(-10 10 14)"/>
+        <rect x="22" y="8" width="52" height="62" rx="6" fill="#fce4ec"/>
+        <rect x="28" y="14" width="40" height="34" rx="4" fill="#f7c9a0" opacity=".7"/>
+        <rect x="28" y="52" width="40" height="10" rx="2" fill="#f9b8cb" opacity=".4"/>
+        <path d="M48 28 C46 25 42 25 42 28.5 C42 31 48 35 48 35 C48 35 54 31 54 28.5 C54 25 50 25 48 28Z" fill="#f4a7b4"/>
+      </svg>
+      <div class="tag">✦ Njammall ✦</div>
+      <h1>Photo <em>Booth</em></h1>
+      <div class="memory-note">Tap a photo to give it a little spin</div>
+      <div class="photo-booth">
+        <img src="WhatsApp Image 2026-04-27 at 8.48.23 PM.jpeg" alt="Memory 1" onclick="this.classList.toggle('popped')">
+        <img src="WhatsApp Image 2026-04-27 at 8.48.50 PM.jpeg" alt="Memory 2" onclick="this.classList.toggle('popped')">
+        <img src="WhatsApp Image 2026-04-27 at 8.49.09 PM.jpeg" alt="Memory 3" onclick="this.classList.toggle('popped')">
+      </div>
+      <button class="btn" onclick="goTo(4)">Play Our Song →</button>
+    </div>
+
+    <!-- SECTION 4 — Song -->
+    <div class="section" id="section4">
+      <svg class="illo" width="90" height="100" viewBox="0 0 90 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="52" y="18" width="6" height="52" rx="3" fill="#f4a7b4"/>
+        <ellipse cx="44" cy="73" rx="14" ry="10" fill="#f4a7b4" transform="rotate(-15 44 73)"/>
+        <path d="M58 18 Q80 28 72 44" stroke="#f4a7b4" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="22" cy="30" r="3" fill="#f7c9a0" opacity=".7"/>
+        <circle cx="74" cy="60" r="2.5" fill="#c5aee8" opacity=".7"/>
+        <circle cx="15" cy="58" r="2" fill="#a8d8bf" opacity=".7"/>
+        <circle cx="78" cy="30" r="2" fill="#f4a7b4" opacity=".6"/>
+      </svg>
+      <div class="tag">✦ just for your ears ✦</div>
+      <h1>our <em>Song</em></h1>
+      <p>Press play — close your eyes — and just feel it.
+        a song that felt like you're with me <3
+      </p>
+      <audio controls>
+        <source src="WhatsApp Audio 2026-04-27 at 9.16.42 PM.mpeg" type="audio/mpeg">
+        Your browser does not support audio.
+      </audio>
+      <button class="btn" onclick="goTo(5)">One Last Thing →</button>
+    </div>
+
+    <!-- SECTION 5 — Final Note -->
+    <div class="section" id="section5">
+      <svg class="illo" width="100" height="110" viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation:sway 3s ease-in-out infinite;">
+        <path d="M50 108 Q46 85 50 68" stroke="#a8d8bf" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M50 88 Q38 80 36 70 Q46 72 50 82Z" fill="#a8d8bf"/>
+        <ellipse cx="50" cy="42" rx="10" ry="20" fill="#fce4ec" transform="rotate(0 50 60)"/>
+        <ellipse cx="50" cy="42" rx="10" ry="20" fill="#fce4ec" transform="rotate(45 50 60)"/>
+        <ellipse cx="50" cy="42" rx="10" ry="20" fill="#fce4ec" transform="rotate(90 50 60)"/>
+        <ellipse cx="50" cy="42" rx="10" ry="20" fill="#fce4ec" transform="rotate(135 50 60)"/>
+        <circle cx="50" cy="60" r="12" fill="#f4a7b4"/>
+        <circle cx="50" cy="60" r="7" fill="#f7c9a0"/>
+      </svg>
+      <div class="tag">✦ from the heart ✦</div>
+      <h1>Final <em>Note</em></h1>
+      <p class="final-msg">"No matter how many birthdays pass,<br/>you will always be my favourite person.<br/>Happy Birthday — from a boy who raised by love of you."</p>
+      <div class="divider"><span></span><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 14 C4 10 1 8 1 5.5 A3.5 3.5 0 0 1 8 4.2 A3.5 3.5 0 0 1 15 5.5 C15 8 12 10 8 14Z" fill="#f4a7b4"/></svg><span></span></div>
+      <button class="btn" onclick="goTo(6)">One More Thing →</button>
+    </div>
+
+    <!-- SECTION 6 — Credits -->
+    <div class="section" id="section6">
+      <svg class="illo" width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 38 Q40 26 30 30 Q28 42 50 44Z" fill="#f4a7b4"/>
+        <path d="M50 38 Q60 26 70 30 Q72 42 50 44Z" fill="#f9b8cb"/>
+        <circle cx="50" cy="40" r="5" fill="#fce4ec"/>
+        <rect x="22" y="44" width="56" height="40" rx="8" fill="#fce4ec"/>
+        <rect x="22" y="44" width="56" height="10" rx="4" fill="#f4a7b4"/>
+        <rect x="46" y="44" width="8" height="40" fill="#f9b8cb" opacity=".6"/>
+        <circle cx="16" cy="38" r="3" fill="#f7c9a0"/>
+        <circle cx="84" cy="38" r="2.5" fill="#c5aee8"/>
+        <circle cx="14" cy="70" r="2" fill="#a8d8bf"/>
+        <circle cx="86" cy="70" r="2" fill="#f4a7b4"/>
+      </svg>
+      <div class="tag">✦ made with love ✦</div>
+      <h1><em>from</em> ante kunjooo</h1>
+      <p>Made by someone who thinks of you constantly,<br/>smiles because of you daily,<br/>and loves you more than words allow.</p>
+      <div class="divider"><span></span><svg width="14" height="14" viewBox="0 0 16 16"><path d="M8 14 C4 10 1 8 1 5.5 A3.5 3.5 0 0 1 8 4.2 A3.5 3.5 0 0 1 15 5.5 C15 8 12 10 8 14Z" fill="#f4a7b4"/></svg><span></span></div>
+      <button class="btn" onclick="goTo(1)">love yoouhhhh ↺</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function goTo(num) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    const next = document.getElementById('section' + num);
+    if (next) next.classList.add('active');
+    if (num === 6) launchConfetti();
+  }
+
+  const colors = ['#f4a7b4','#f7c9a0','#a8d8bf','#c5aee8','#fce4ec','#f9b8cb'];
+
+  function makePiece() {
+    const c = document.getElementById('confetti');
+    const el = document.createElement('div');
+    el.className = 'conf';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const size = 8 + Math.random() * 10;
+    const type = Math.floor(Math.random() * 3);
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (4 + Math.random() * 6) + 's';
+    el.style.animationDelay = (Math.random() * 2) + 's';
+    if (type === 0) {
+      el.style.cssText += `width:${size}px;height:${size}px;border-radius:50%;background:${color};`;
+    } else if (type === 1) {
+      el.style.cssText += `width:${size*1.6}px;height:${size*.6}px;border-radius:2px;background:${color};`;
+    } else {
+      el.style.cssText += `width:${size*1.2}px;height:${size*1.2}px;background:${color};clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);`;
+    }
+    c.appendChild(el);
+    setTimeout(() => el.remove(), 10000);
+  }
+
+  setInterval(() => { if (Math.random() > .7) makePiece(); }, 700);
+
+  function launchConfetti() {
+    for (let i = 0; i < 50; i++) setTimeout(makePiece, i * 55);
+  }
+</script>
+</body>
+</html>
